@@ -21,10 +21,12 @@ const cors = require('cors');
 
 require('dotenv').config()
 
-const serviceAccount = require("./serviceAccountKey.json");
-
+const base64EncodedServiceAccount = process.env.SERVICE_ACCOUNT;
+const decodedServiceAccount = Buffer.from(base64EncodedServiceAccount, "base64").toString("utf-8");
+const credentials = JSON.parse(decodedServiceAccount);
+        
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential : admin.credential.cert(credentials),
   databaseURL: "https://rentredi-c4990-default-rtdb.firebaseio.com",
 });
 
